@@ -5,49 +5,42 @@ const totalQuestions = 10; // Assuming 10 questions
 
 // List of colors for each question's background (linear gradient effect)
 const colors = [
-    ["#f7b7b7", "#f7f7f7"], // Example gradient from light pink to white
-    ["#b7f7b7", "#f7f7f7"], // Example gradient from light green to white
-    ["#b7b7f7", "#f7f7f7"], // Example gradient from light blue to white
-    ["#f7f7b7", "#f7f7f7"], // Example gradient from light yellow to white
-    ["#b7f7d8", "#f7f7f7"], // Example gradient from light turquoise to white
-    ["#b7d8f7", "#f7f7f7"], // Example gradient from light blue to white
-    ["#f7d8b7", "#f7f7f7"], // Example gradient from light orange to white
-    ["#d8f7b7", "#f7f7f7"], // Example gradient from light lime to white
-    ["#b7b7d8", "#f7f7f7"], // Example gradient from light lavender to white
-    ["#d8b7f7", "#f7f7f7"], // Example gradient from light purple to white
+    ["#f7b7b7", "#f7f7f7"],
+    ["#b7f7b7", "#f7f7f7"],
+    ["#b7b7f7", "#f7f7f7"],
+    ["#f7f7b7", "#f7f7f7"],
+    ["#b7f7d8", "#f7f7f7"],
+    ["#b7d8f7", "#f7f7f7"],
+    ["#f7d8b7", "#f7f7f7"],
+    ["#d8f7b7", "#f7f7f7"],
+    ["#b7b7d8", "#f7f7f7"],
+    ["#d8b7f7", "#f7f7f7"],
 ];
 
 // Add event listeners for answer buttons
-document.getElementById("real-btn").addEventListener("click", function() {
-    checkAnswer(true);  // Assuming the correct answer is "Real"
+document.getElementById("real-btn").addEventListener("click", function () {
+    checkAnswer(true);
 });
 
-document.getElementById("fake-btn").addEventListener("click", function() {
-    checkAnswer(false);  // Assuming the correct answer is "Fake"
+document.getElementById("fake-btn").addEventListener("click", function () {
+    checkAnswer(false);
 });
 
 // Function to check the answer
 function checkAnswer(isReal) {
-    // For demonstration, let's assume the correct answer for question 1 is "Real"
-    const correctAnswer = true; // Modify this based on your quiz
+    const correctAnswer = true;
 
     if (isReal === correctAnswer) {
-        score += 10;  // Add 10 points for correct answer
+        score += 10;
     }
 
-    // Update score display
     updateScore();
-
-    // Update progress bar
     currentQuestionIndex++;
     updateProgress();
 
-    // Load next question or end quiz
     if (currentQuestionIndex < totalQuestions) {
-        // Update question, image, and buttons for next question
         updateQuestion();
     } else {
-        // End of quiz, show final score
         endQuiz();
     }
 }
@@ -56,16 +49,14 @@ function checkAnswer(isReal) {
 function updateProgress() {
     const progress = (currentQuestionIndex / totalQuestions) * 100;
     document.getElementById("progress-bar-filled").style.width = progress + "%";
-    document.getElementById("progress-bar-filled").textContent = Math.round(progress) + "%"; // Show percent inside progress bar
+    document.getElementById("progress-bar-filled").textContent = Math.round(progress) + "%";
 }
 
-// Update the question and image (for simplicity, using the same structure)
+// Update the question and image
 function updateQuestion() {
-    // Update question, image, and background color (linear gradient)
     document.querySelector("h2").textContent = "Question " + (currentQuestionIndex + 1);
     document.getElementById("quiz-image").src = "Img/Img" + (currentQuestionIndex + 1) + ".jpg";
 
-    // Change background color for each new question (linear gradient from top to bottom)
     const gradientColors = colors[currentQuestionIndex];
     document.body.style.background = `linear-gradient(to bottom, ${gradientColors[0]}, ${gradientColors[1]})`;
 }
@@ -74,17 +65,44 @@ function updateQuestion() {
 function updateScore() {
     const scoreSpan = document.getElementById("score");
     scoreSpan.textContent = score;
-
-    // Trigger the animation by adding/removing a class (or directly using animation in CSS)
     const scoreContainer = document.getElementById("score-container");
     scoreContainer.classList.remove("score-animation");
-    void scoreContainer.offsetWidth; // Trigger reflow to restart animation
+    void scoreContainer.offsetWidth;  // Trigger reflow for animation reset
     scoreContainer.classList.add("score-animation");
 }
 
 // End the quiz and show the final score
 function endQuiz() {
-    document.querySelector("h2").textContent = "Quiz Completed!";
-    document.querySelector(".buttons-container").style.display = "none";  // Hide buttons
-    document.getElementById("progress-text").textContent = "100%";
+    document.querySelector(".quiz-container").innerHTML = `
+        <div class="result-container">
+            <h2>Nice Work</h2>
+            <div class="result-icon">
+                <img src="Img/checkmark.png" alt="Success">
+            </div>
+            <p>You Earned <strong>${score} pts</strong></p>
+            <div class="stars">
+                <span class="star">⭐</span>
+                <span class="star">⭐</span>
+                <span class="star faded">⭐</span>
+            </div>
+            <button class="play-again" onclick="restartQuiz()">Play Again</button>
+        </div>
+    `;
+}
+
+// Restart Quiz Function - Reset the quiz and redirect to index.html
+function restartQuiz() {
+    // Reset score and question index
+    score = 0;
+    currentQuestionIndex = 0;
+
+    // Re-initialize the score and progress
+    updateScore();
+    updateProgress();
+    updateQuestion();
+
+    // Redirect to index.html after resetting
+    setTimeout(function () {
+        window.location.href = "index.html"; // Ensure redirection happens after reset
+    }, 500); // Delay the redirection to allow for reset animations to complete
 }

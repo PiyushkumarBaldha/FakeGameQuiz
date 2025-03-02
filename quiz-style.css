@@ -7,7 +7,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    transition: background-color 0.5s ease; /* Smooth transition for background color */
+    transition: background-color 0.5s ease;
     overflow: hidden;
 }
 
@@ -26,9 +26,9 @@ body {
 
 /* Image Styling */
 #quiz-image {
-    width: 100%;  /* Make the image fill the container */
-    height: 300px;  /* Set a fixed height for uniformity */
-    object-fit: cover;  /* Ensure the image covers the container area without distortion */
+    width: 100%;
+    height: 300px;
+    object-fit: contain; /* Ensure the image fits without cropping */
     border-radius: 10px;
     margin: 20px 0;
     transition: all 0.3s ease;
@@ -48,9 +48,9 @@ body {
     background-color: #4caf50;
     border-radius: 10px;
     width: 0%;
-    text-align: center; /* Align progress percentage text inside the progress bar */
+    text-align: center;
     color: white;
-    line-height: 20px; /* Center text vertically inside the bar */
+    line-height: 20px;
     transition: width 0.5s;
 }
 
@@ -96,13 +96,12 @@ body {
     right: 20px;
     font-size: 20px;
     color: white;
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 10px 15px;
     border-radius: 10px;
-    animation: score-animation 1s ease-out; /* Add animation */
+    animation: score-animation 1s ease-out;
 }
 
-/* Animation for the score */
 @keyframes score-animation {
     0% {
         transform: scale(0);
@@ -122,34 +121,67 @@ body {
     font-weight: bold;
 }
 
-/* Mobile Responsiveness (below 768px screen width) */
+/* Result Screen Styling */
+.result-container {
+    text-align: center;
+}
+
+.result-icon img {
+    width: 100px;
+    height: 100px;
+}
+
+.stars {
+    margin: 10px 0;
+}
+
+.star {
+    color: gold;
+}
+
+.star.faded {
+    color: lightgray;
+}
+
+.next-stage, .play-again {
+    padding: 15px 25px;
+    font-size: 18px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.next-stage:hover, .play-again:hover {
+    background-color: #45a049;
+}
+
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
-    /* Stack buttons vertically on mobile */
     .buttons-container {
         flex-direction: column;
-        gap: 10px; /* Space out buttons */
+        gap: 10px;
     }
 
-    /* Make buttons wider on mobile */
     .answer-btn {
-        width: 80%; 
-        margin: 10px auto; /* Center the buttons */
+        width: 80%;
+        margin: 10px auto;
     }
 
-    /* Make the score container more prominent */
     #score-container {
-        font-size: 18px; /* Slightly smaller font size */
-        padding: 8px 12px; /* Adjust padding for smaller screens */
+        font-size: 18px;
+        padding: 8px 12px;
     }
 
-    /* Adjust the image height for mobile devices */
     #quiz-image {
-        height: 200px; /* Reduce image height on mobile */
+        height: 200px;
     }
 
-    /* Center text and improve spacing for mobile */
     h2 {
-        font-size: 24px; /* Slightly smaller header */
+        font-size: 24px;
     }
 
     h3 {
@@ -157,22 +189,18 @@ body {
     }
 }
 
-/* Desktop & Large Screens (Above 768px) */
 @media (min-width: 769px) {
-    /* Layout for desktop: maintain the row layout */
     .buttons-container {
         flex-direction: row;
     }
 
-    /* Make the score container more discreet on large screens */
     #score-container {
-        font-size: 22px; /* Larger font size for bigger screens */
+        font-size: 22px;
         padding: 12px 18px;
     }
 
-    /* Maintain image height for desktop */
     #quiz-image {
-        height: 300px; /* Default image height */
+        height: 300px;
     }
 
     h2 {
@@ -183,4 +211,3 @@ body {
         font-size: 22px;
     }
 }
-
