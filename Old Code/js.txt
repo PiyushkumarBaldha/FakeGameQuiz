@@ -1,0 +1,27 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const userForm = document.getElementById("userForm");
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedQuiz = urlParams.get("quiz"); // Get quiz type from URL
+
+    userForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const userName = document.getElementById("name").value.trim();
+        const userAge = document.getElementById("age").value.trim();
+
+        if (userName === "" || userAge === "") {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        localStorage.setItem("userName", userName);
+        localStorage.setItem("userAge", userAge);
+
+        // Redirect to the selected quiz page
+        if (selectedQuiz) {
+            window.location.href = `${selectedQuiz}.html`;
+        } else {
+            window.location.href = "quiz_selection.html"; // Default fallback
+        }
+    });
+});

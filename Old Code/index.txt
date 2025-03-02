@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Selection</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background">
+      <!--  <video autoplay muted loop>
+            <source src="background.mp4" type="video/mp4">
+        </video>  -->
+    </div>
+    <div class="container">
+        <h1>Choose Your Quiz</h1>
+        <div class="options">
+            <a href="user_info.html?quiz=teenager" class="option teenager"> Under 18 </a>
+            <a href="user_info.html?quiz=adult" class="option adult">Between </a>
+            <a href="user_info.html?quiz=professional" class="option professional">Professional</a>
+
+            <label for="option"> Choose an option: </label>
+            <select id="option">
+            <option text="First"> Under > 18</option>
+            <option text="Second"> between  18 - 65</option>
+            <option text="Third"> Above < 65 </option>
+            </select>
+            <p id="selectedOption"></p>
+
+            <script>
+                document.getElementById("option").addEventListener("change", function(){
+                    document.getElementById("selectedOption").innerText= "Selected Option "+ this.text;
+                });
+
+            </script>
+
+
+        </div>
+        <a href="#" class="start-btn">Start Quiz</a>
+    </div>
+    
+    <script>
+        function redirectToPage(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>

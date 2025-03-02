@@ -1,0 +1,213 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    margin: 0;
+    height: 100vh; /* 100 % view point */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;    
+}
+
+.background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ff898d, #fad0c4);
+    animation: backgroundAnimation 10s infinite alternate;
+}
+
+/*@keyframes backgroundAnimation {
+    0% {background: linear-gradient(135deg, #ff9a9a, #fad0c4);}
+    100% {background: linear-gradient(135deg, #fad0c4, #ffdde1);}
+}*/
+
+.background video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+}
+
+
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    background-color: rgba(255,255,255,0.9);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.option {
+    display: block;
+    width: 80%;
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s;
+    text-align: center;
+}
+
+
+.teenager  {
+    background: #ffcc00;
+}
+
+.teenager:hover {
+    background: #e9ba01;
+    transform: scale(1.2);
+}
+
+.adult {
+    background: #ff5733;
+}
+
+.adult:hover {
+    background: #c83e20;
+    transform: scale(1.2);
+}
+
+.professional {
+    background: #337ab7;
+}
+
+.professional:hover {
+    background: #154a78;
+    transform: scale(1.2);
+}
+
+.start-btn {
+    margin-top: 30px;
+    display: inline-block;
+    padding: 18px 30px;
+    background: #28a745;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: 0.3s;
+    animation: bounce 2s infinite;
+}
+
+.start-btn:hover {
+    background: #1e8138;
+    transform: scale(1.1);
+}
+
+
+@keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }    
+
+/* Teenager page*/
+    .quiz-container {
+        text-align: center;
+        max-width: 600px;
+        margin: auto;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 1s ease-in-out;
+    }
+    
+    .quiz-image {
+        width: 100%;
+        max-height: 300px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin: 20px 0;
+    }
+    
+    .quiz-btn {
+        background: #ff5733;
+        color: white;
+        border: none;
+        padding: 15px 20px;
+        margin: 10px;
+        font-size: 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    
+    .quiz-btn:hover {
+        background: #d9411e;
+        transform: scale(1.05);
+    }
+    
+/* user info */
+
+.form-container {
+    width: 90%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
