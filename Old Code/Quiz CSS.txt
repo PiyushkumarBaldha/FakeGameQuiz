@@ -1,0 +1,209 @@
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #f79c99, #f7d7d2); /* Updated gradient background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    transition: background-color 0.5s ease;
+    overflow: hidden;
+}
+
+/* Quiz Container */
+.quiz-container {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.5s ease;
+}
+
+#score-container{
+    text-align: right;
+    position: relative;
+}
+
+/* Image Styling */
+#quiz-image {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    border-radius: 10px;
+    margin: 20px 0;
+    transition: all 0.3s ease;
+}
+
+/* Progress Bar */
+#progress-bar {
+    width: 100%;
+    background-color: #e0e0e0;
+    height: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+#progress-bar-filled {
+    height: 100%;
+    background-color: #4caf50;
+    border-radius: 10px;
+    width: 0%;
+    text-align: center;
+    color: white;
+    line-height: 20px;
+    transition: width 0.5s;
+}
+
+/* Answer Buttons */
+.buttons-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* General Button Styling */
+.answer-btn {
+    padding: 15px 20px;
+    font-size: 18px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 40%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover Effects for All Buttons */
+.answer-btn:hover {
+    background-color: #333;
+    transform: scale(1.05);
+}
+
+/* Real Button */
+#real-btn {
+    background-color: #4caf50;
+}
+
+#real-btn:hover {
+    background-color: #388e3c; /* Darker shade of green */
+}
+
+/* Fake Button */
+#fake-btn {
+    background-color: #ff9800;
+}
+
+#fake-btn:hover {
+    background-color: #f57c00; /* Darker shade of orange */
+}
+
+/* Confidence Buttons */
+.confidence-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.confidence-btn {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover Effects for Confidence Buttons */
+.confidence-btn:hover {
+    transform: scale(1.05);
+}
+
+#confident-btn {
+    background-color: #4caf50;
+    color: white;
+}
+
+#confident-btn:hover {
+    background-color: #388e3c; /* Darker shade of green */
+}
+
+#not-sure-btn {
+    background-color: #fbc02d;
+    color: black;
+}
+
+#not-sure-btn:hover {
+    background-color: #f57c00; /* Darker shade of yellow */
+}
+
+#not-confident-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+#not-confident-btn:hover {
+    background-color: #d32f2f; /* Darker shade of red */
+}
+
+/* Result Page Styling */
+.result-container {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+}
+
+.result-container h2 {
+    font-size: 26px;
+    color: #333;
+}
+
+.result-container p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Stars */
+.stars { margin: 10px 0; font-size: 30px; }
+.star { color: gold; animation: glow 1s infinite alternate; }
+.star.faded { color: lightgray; animation: none; }
+
+/* Play Again Button */
+.play-again {
+    background: linear-gradient(135deg, #4caf50, #45a049);
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.play-again:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow {
+    from { text-shadow: 0px 0px 5px gold; }
+    to { text-shadow: 0px 0px 15px gold; }
+}
