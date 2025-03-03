@@ -1,6 +1,24 @@
+const colors = [ 
+    ["#f79c99", "#f7d7d2"],
+    ["#a2f7a2", "#d7f7d2"],
+    ["#a2a2f7", "#d2d7f7"],
+    ["#f7f7a2", "#f7f7c7"],
+    ["#a2f7c7", "#d2f7d7"],
+    ["#a2c7f7", "#d2d7f7"],
+    ["#f7c7a2", "#f7d2c7"],
+    ["#c7f7a2", "#d2f7a2"],
+    ["#a2a2c7", "#d7d7f7"],
+    ["#c7a2f7", "#d2c7f7"],
+];
+
 let score = 0;
 let currentQuestionIndex = 0;
 const totalQuestions = 10;
+
+// Set gradient on page load to make sure the first question has a color
+window.onload = function() {
+    setGradientBackground(); // Ensure gradient is set at the start
+};
 
 document.getElementById("real-btn").addEventListener("click", () => checkAnswer(true));
 document.getElementById("fake-btn").addEventListener("click", () => checkAnswer(false));
@@ -25,6 +43,9 @@ function updateProgress() {
 }
 
 function updateQuestion() {
+    // Change background color on every new question
+    setGradientBackground();
+
     document.querySelector("h2").textContent = "Question " + (currentQuestionIndex + 1);
     document.getElementById("quiz-image").src = "Img/Img" + (currentQuestionIndex + 1) + ".jpg";
 }
@@ -52,4 +73,11 @@ function restartQuiz() {
     score = 0;
     currentQuestionIndex = 0;
     location.reload();
+}
+
+// Function to set a random gradient background (top to bottom, stronger but calm colors)
+function setGradientBackground() {
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    const gradient = `linear-gradient(to bottom, ${colors[randomIndex][0]}, ${colors[randomIndex][1]})`;
+    document.body.style.background = gradient;
 }

@@ -1,7 +1,7 @@
 /* General Body Styling */
 body {
     font-family: Arial, sans-serif;
-    background: #f7f7f7;
+    background: linear-gradient(to bottom, #f79c99, #f7d7d2); /* Updated gradient background */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,6 +22,12 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     position: relative;
     overflow: hidden;
+    transition: background 0.5s ease;
+}
+
+#score-container{
+    text-align: right;
+    position: relative;
 }
 
 /* Image Styling */
@@ -62,6 +68,7 @@ body {
     margin-top: 20px;
 }
 
+/* General Button Styling */
 .answer-btn {
     padding: 15px 20px;
     font-size: 18px;
@@ -70,10 +77,32 @@ body {
     border-radius: 5px;
     cursor: pointer;
     width: 40%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-#real-btn { background-color: green; }
-#fake-btn { background-color: orange; }
+/* Hover Effects for All Buttons */
+.answer-btn:hover {
+    background-color: #333;
+    transform: scale(1.05);
+}
+
+/* Real Button */
+#real-btn {
+    background-color: #4caf50;
+}
+
+#real-btn:hover {
+    background-color: #388e3c; /* Darker shade of green */
+}
+
+/* Fake Button */
+#fake-btn {
+    background-color: #ff9800;
+}
+
+#fake-btn:hover {
+    background-color: #f57c00; /* Darker shade of orange */
+}
 
 /* Confidence Buttons */
 .confidence-container {
@@ -89,11 +118,40 @@ body {
     border-radius: 5px;
     cursor: pointer;
     width: 30%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-#confident-btn { background-color: #4caf50; color: white; }
-#not-sure-btn { background-color: #fbc02d; color: black; }
-#not-confident-btn { background-color: #f44336; color: white; }
+/* Hover Effects for Confidence Buttons */
+.confidence-btn:hover {
+    transform: scale(1.05);
+}
+
+#confident-btn {
+    background-color: #4caf50;
+    color: white;
+}
+
+#confident-btn:hover {
+    background-color: #388e3c; /* Darker shade of green */
+}
+
+#not-sure-btn {
+    background-color: #fbc02d;
+    color: black;
+}
+
+#not-sure-btn:hover {
+    background-color: #f57c00; /* Darker shade of yellow */
+}
+
+#not-confident-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+#not-confident-btn:hover {
+    background-color: #d32f2f; /* Darker shade of red */
+}
 
 /* Result Page Styling */
 .result-container {
