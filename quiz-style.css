@@ -28,13 +28,13 @@ body {
 #quiz-image {
     width: 100%;
     height: 300px;
-    object-fit: contain; /* Ensure the image fits without cropping */
+    object-fit: contain;
     border-radius: 10px;
     margin: 20px 0;
     transition: all 0.3s ease;
 }
 
-/* Progress Bar Styling */
+/* Progress Bar */
 #progress-bar {
     width: 100%;
     background-color: #e0e0e0;
@@ -54,7 +54,7 @@ body {
     transition: width 0.5s;
 }
 
-/* Buttons Container */
+/* Answer Buttons */
 .buttons-container {
     display: flex;
     justify-content: space-around;
@@ -62,7 +62,6 @@ body {
     margin-top: 20px;
 }
 
-/* Answer Buttons */
 .answer-btn {
     padding: 15px 20px;
     font-size: 18px;
@@ -71,143 +70,82 @@ body {
     border-radius: 5px;
     cursor: pointer;
     width: 40%;
-    margin: 10px 0;
 }
 
-/* Real Button Green */
-#real-btn {
-    background-color: green;
+#real-btn { background-color: green; }
+#fake-btn { background-color: orange; }
+
+/* Confidence Buttons */
+.confidence-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
 }
 
-/* Fake Button Orange */
-#fake-btn {
-    background-color: orange;
+.confidence-btn {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30%;
 }
 
-/* Button Hover Effect */
-.answer-btn:hover {
-    transform: scale(1.05);
-}
+#confident-btn { background-color: #4caf50; color: white; }
+#not-sure-btn { background-color: #fbc02d; color: black; }
+#not-confident-btn { background-color: #f44336; color: white; }
 
-/* Positioning the score in the top-right corner with background and animation */
-#score-container {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 20px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 10px 15px;
-    border-radius: 10px;
-    animation: score-animation 1s ease-out;
-}
-
-@keyframes score-animation {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-    50% {
-        transform: scale(1.2);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-#score-container span {
-    font-weight: bold;
-}
-
-/* Result Screen Styling */
+/* Result Page Styling */
 .result-container {
     text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
 }
 
-.result-icon img {
-    width: 100px;
-    height: 100px;
+.result-container h2 {
+    font-size: 26px;
+    color: #333;
 }
 
-.stars {
-    margin: 10px 0;
+.result-container p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
 }
 
-.star {
-    color: gold;
-}
+/* Stars */
+.stars { margin: 10px 0; font-size: 30px; }
+.star { color: gold; animation: glow 1s infinite alternate; }
+.star.faded { color: lightgray; animation: none; }
 
-.star.faded {
-    color: lightgray;
-}
-
-.next-stage, .play-again {
-    padding: 15px 25px;
-    font-size: 18px;
-    background-color: #4caf50;
-    color: white;
+/* Play Again Button */
+.play-again {
+    background: linear-gradient(135deg, #4caf50, #45a049);
     border: none;
-    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    padding: 12px 20px;
+    border-radius: 8px;
     cursor: pointer;
-    margin: 10px;
-    transition: background-color 0.3s ease;
+    margin-top: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.next-stage:hover, .play-again:hover {
-    background-color: #45a049;
+.play-again:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .buttons-container {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .answer-btn {
-        width: 80%;
-        margin: 10px auto;
-    }
-
-    #score-container {
-        font-size: 18px;
-        padding: 8px 12px;
-    }
-
-    #quiz-image {
-        height: 200px;
-    }
-
-    h2 {
-        font-size: 24px;
-    }
-
-    h3 {
-        font-size: 18px;
-    }
+/* Keyframe Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-@media (min-width: 769px) {
-    .buttons-container {
-        flex-direction: row;
-    }
-
-    #score-container {
-        font-size: 22px;
-        padding: 12px 18px;
-    }
-
-    #quiz-image {
-        height: 300px;
-    }
-
-    h2 {
-        font-size: 28px;
-    }
-
-    h3 {
-        font-size: 22px;
-    }
+@keyframes glow {
+    from { text-shadow: 0px 0px 5px gold; }
+    to { text-shadow: 0px 0px 15px gold; }
 }
