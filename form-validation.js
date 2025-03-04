@@ -14,6 +14,7 @@ document.getElementById("submit-btn").addEventListener("click", function(event) 
 
     // Check if required fields are filled
     var isValid = true;
+    var ageValue = parseInt(age.value);
 
     if (profession.value === "") {
         profession.style.borderColor = "red";
@@ -21,14 +22,16 @@ document.getElementById("submit-btn").addEventListener("click", function(event) 
         isValid = false;
     }
 
-    if (age.value === "") {
+    if (age.value === "" || isNaN(ageValue) || ageValue < 0 || ageValue > 100) {
         age.style.borderColor = "red";
         age.style.boxShadow = "0 0 10px rgba(255, 0, 0, 0.5)";
         isValid = false;
     }
 
-    // If form is valid, redirect to another page
+    // If form is valid, store data and redirect
     if (isValid) {
-        window.location.href = "quiz.html";  // Redirect to result.html
+        localStorage.setItem("userAge", ageValue);
+        localStorage.setItem("userProfession", profession.value);
+        window.location.href = "quiz.html";  // Redirect to quiz page
     }
 });

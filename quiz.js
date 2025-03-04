@@ -1,4 +1,4 @@
-const colors = [ 
+const colors = [
     ["#f79c99", "#f7d7d2"],
     ["#a2f7a2", "#d7f7d2"],
     ["#a2a2f7", "#d2d7f7"],
@@ -14,10 +14,30 @@ const colors = [
 let score = 0;
 let currentQuestionIndex = 0;
 const totalQuestions = 10;
+let imageFolder = "Img"; // Default image folder
 
-// Set gradient on page load to make sure the first question has a color
-window.onload = function() {
-    setGradientBackground(); // Ensure gradient is set at the start
+// Retrieve form values from localStorage
+const userAge = localStorage.getItem("userAge");
+const userProfession = localStorage.getItem("userProfession");
+
+// Determine image folder based on age and profession
+if (userAge !== null && userProfession !== null) {
+    const age = parseInt(userAge);
+    if (userProfession !== "engineer") {
+        if (age >= 0 && age <= 18) {
+            imageFolder = "Img18";
+        } else if (age >= 19 && age <= 60) {
+            imageFolder = "Img60";
+        } else if (age >= 61 && age <= 100) {
+            imageFolder = "Img70";
+        }
+    }
+}
+
+// Set gradient on page load
+window.onload = function () {
+    setGradientBackground();
+    updateQuestion();
 };
 
 document.getElementById("real-btn").addEventListener("click", () => checkAnswer(true));
@@ -43,11 +63,9 @@ function updateProgress() {
 }
 
 function updateQuestion() {
-    // Change background color on every new question
     setGradientBackground();
-
     document.querySelector("h2").textContent = "Question " + (currentQuestionIndex + 1);
-    document.getElementById("quiz-image").src = "Img/Img" + (currentQuestionIndex + 1) + ".jpg";
+    document.getElementById("quiz-image").src = `${imageFolder}/Img${currentQuestionIndex + 1}.jpg`;
 }
 
 function updateScore() {
@@ -75,7 +93,7 @@ function restartQuiz() {
     location.reload();
 }
 
-// Function to set a random gradient background (top to bottom, stronger but calm colors)
+// Function to set a random gradient background
 function setGradientBackground() {
     const randomIndex = Math.floor(Math.random() * colors.length);
     const gradient = `linear-gradient(to bottom, ${colors[randomIndex][0]}, ${colors[randomIndex][1]})`;
