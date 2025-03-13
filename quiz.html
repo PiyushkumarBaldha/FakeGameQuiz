@@ -7,10 +7,13 @@
     <link rel="stylesheet" href="quiz-style.css">
 </head>
 <body>
-
+    <div class="navigation">
+        <div id="question-nav"></div>
+    </div>
+    
     <div class="quiz-container">
-        <h2>Question 1</h2>
-        <h4 id="score-container"><span id="score">0</span></h4>
+        <h2 id="question-title">Question 1</h2>
+        <h4 id="score-container">Score: <span id="score">0</span></h4>
         <img id="quiz-image" src="Img/Img1.jpg" alt="Quiz Image">
         
         <div id="progress-bar">
@@ -18,25 +21,18 @@
         </div>
         
         <h3>Choose your answer</h3>
-
-        <!-- Answer Buttons (Real/Fake) -->
         <div class="buttons-container">
             <button class="answer-btn" id="real-btn">Real</button>
             <button class="answer-btn" id="fake-btn">Fake</button>
         </div>
 
-        <!-- Confidence Level Buttons -->
         <div class="confidence-container">
             <button class="confidence-btn" id="confident-btn">😊 Confident</button>
             <button class="confidence-btn" id="not-sure-btn">😐 Not Sure</button>
             <button class="confidence-btn" id="not-confident-btn">😟 Not Confident</button>
         </div>
-
-        <!-- Score Display -->
-        
     </div>
-
+    
     <script src="quiz.js"></script>
-
 </body>
 </html>
