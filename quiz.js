@@ -1,3 +1,7 @@
+// ============================
+// Existing Code (Quiz Logic, Navigation, Timer, etc.)
+// ============================
+
 const colors = [
     ["#f79c99", "#f7d7d2"],
     ["#a2f7a2", "#d7f7d2"],
@@ -103,6 +107,11 @@ const folderCorrectAnswers = {
 let correctAnswers = folderCorrectAnswers[imageFolder] || folderCorrectAnswers["Img"];
 
 // ---------------------------
+// Store Quiz Start Time
+// ---------------------------
+const quizStartTime = Date.now();
+
+// ---------------------------
 // Initialize Question Display
 // ---------------------------
 window.onload = function () {
@@ -121,37 +130,26 @@ document.getElementById("fake-btn").addEventListener("click", () => checkAnswer(
  * Only records an answer if the question hasn't been answered yet.
  */
 function checkAnswer(isReal) {
-    // Prevent multiple answers for the same question
     if (userAnswers[currentQuestionIndex] !== null) return;
-
-    // Determine the user's answer as a string
     let userAnswer = isReal ? "Real" : "Fake";
     userAnswers[currentQuestionIndex] = userAnswer;
     
-    // Check answer against the correct answer for the current folder
     if (userAnswer === correctAnswers[currentQuestionIndex]) {
-        score += 10; // Correct answer: add points
+        score += 10;
     }
     updateScore();
     markAnswered(currentQuestionIndex);
     updateProgress();
 
-    // Auto-navigate to the next unanswered question, if available
     let nextIndex = findNextUnanswered(currentQuestionIndex);
     if (nextIndex !== -1) {
         currentQuestionIndex = nextIndex;
         updateQuestion();
     } else {
-        // All questions answered—end the quiz
         endQuiz();
     }
 }
 
-/**
- * Finds the next unanswered question index in a circular order.
- * @param {number} current - The current question index.
- * @returns {number} The next unanswered question index, or -1 if all are answered.
- */
 function findNextUnanswered(current) {
     for (let i = current + 1; i < totalQuestions; i++) {
          if (userAnswers[i] === null) return i;
@@ -162,10 +160,6 @@ function findNextUnanswered(current) {
     return -1;
 }
 
-/**
- * Updates the navigation button color based on the answer.
- * Green if correct (matches correctAnswers), red if wrong.
- */
 function markAnswered(index) {
     const navButtons = document.querySelectorAll(".nav-btn");
     const button = navButtons[index];
@@ -176,9 +170,6 @@ function markAnswered(index) {
     }
 }
 
-/**
- * Updates the progress bar based on the number of answered questions.
- */
 function updateProgress() {
     let answeredCount = userAnswers.filter(answer => answer !== null).length;
     const progress = (answeredCount / totalQuestions) * 100;
@@ -186,51 +177,79 @@ function updateProgress() {
     document.getElementById("progress-bar-filled").textContent = Math.round(progress) + "%";
 }
 
-/**
- * Updates the displayed question title and image.
- */
 function updateQuestion() {
     setGradientBackground();
     document.querySelector("h2").textContent = "Question " + (currentQuestionIndex + 1);
     document.getElementById("quiz-image").src = `${imageFolder}/Img${currentQuestionIndex + 1}.jpg`;
 }
 
-/**
- * Updates the displayed score.
- */
 function updateScore() {
     document.getElementById("score").textContent = score;
 }
 
-/**
- * Returns a star rating string based on the score.
- */
 function getStarRating() {
     return score >= 80 ? "⭐️⭐️⭐️" : score >= 50 ? "⭐️⭐️☆" : "⭐️☆☆";
 }
 
 /**
  * Ends the quiz by clearing the timer and displaying the result.
+ * Shows two buttons: "Finish" and "Play Again".
  */
 function endQuiz() {
-    clearInterval(timerInterval);  // Stop the timer
+    clearInterval(timerInterval);
+    const quizEndTime = Date.now();
+    const timeTaken = Math.floor((quizEndTime - quizStartTime) / 1000);
+    
+    // Store performance locally
+    const quizPerformance = {
+        score: score,
+        answers: userAnswers,
+        confidence: userConfidence,
+        timeTaken: timeTaken
+    };
+    localStorage.setItem("quizPerformance", JSON.stringify(quizPerformance));
+    
+    // Get or set the user's attempt count (if not set, default to 1)
+    let attempt = localStorage.getItem("attempt");
+    if (!attempt) {
+        attempt = 1;
+        localStorage.setItem("attempt", attempt);
+    }
+    
+    // Show result with two buttons: "Finish" and "Play Again"
     document.querySelector(".quiz-container").innerHTML = `
         <div class="result-container">
             <h2>Great Job!</h2>
             <p>Your Score: <strong>${score} pts</strong></p>
             <div class="stars">${getStarRating()}</div>
-            <button class="play-again" onclick="restartQuiz()">Play Again</button>
+            <button class="finish-game" onclick="finishGame()">Finish</button>
+            <button class="play-again" onclick="playAgain()">Play Again</button>
         </div>
     `;
 }
 
 /**
- * Restarts the quiz.
+ * Redirects the user to the main index page after sending data.
  */
-function restartQuiz() {
-    score = 0;
-    currentQuestionIndex = 0;
-    location.reload();
+function finishGame() {
+    sendDataToServer().then(() => {
+        window.location.href = "index.html"; // Change to your main index file
+    });
+}
+
+/**
+ * Sends the data and then resets the quiz for another attempt.
+ * Also updates the attempt variant (e.g. from 1 to 2).
+ */
+function playAgain() {
+    sendDataToServer().then(() => {
+        // Increment attempt count (store as a number)
+        let attempt = parseInt(localStorage.getItem("attempt") || "1", 10);
+        attempt++;
+        localStorage.setItem("attempt", attempt);
+        // Reload the page to restart the quiz
+        window.location.reload();
+    });
 }
 
 /**
@@ -254,3 +273,54 @@ document.getElementById("not-sure-btn").addEventListener("click", function() {
 document.getElementById("not-confident-btn").addEventListener("click", function() {
     userConfidence[currentQuestionIndex] = "Not Confident";
 });
+
+// ---------------------------
+// NEW: Function to Send Data to a Common Server Excel File
+// ---------------------------
+async function sendDataToServer() {
+    // Retrieve form data (ensure your form saves these values in localStorage)
+    const userId = localStorage.getItem("userId") || "";
+    const password = localStorage.getItem("password") || "";
+    const userAge = localStorage.getItem("userAge") || "";
+    const userProfession = localStorage.getItem("userProfession") || "";
+    const status = localStorage.getItem("status") || "";
+
+    // Retrieve quiz performance data
+    const storedPerformance = localStorage.getItem("quizPerformance");
+    let quizPerformance = {};
+    if (storedPerformance) {
+        quizPerformance = JSON.parse(storedPerformance);
+    }
+
+    // Get the current attempt count and build a variant (e.g., "2.1")
+    let attempt = localStorage.getItem("attempt") || "1";
+    const variant = attempt + ".1";
+
+    // Build a data object that includes form and quiz performance information
+    const data = {
+       formData: {
+           userId: userId,
+           password: password,
+           age: userAge,
+           profession: userProfession,
+           status: status
+       },
+       quizPerformance: quizPerformance,
+       attempt: variant,
+       timestamp: new Date().toISOString()
+    };
+
+    try {
+        const response = await fetch('/submitQuizData', {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log(result.message);
+        return result;
+    } catch (err) {
+        console.error("Error submitting data", err);
+        alert("Error submitting data to server.");
+    }
+}
