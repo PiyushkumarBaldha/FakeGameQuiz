@@ -2,70 +2,59 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const XLSX = require('xlsx');
 const fs = require('fs');
+const path = require('path');
+
 const app = express();
 const port = 3000;
+const excelFilePath = path.join(__dirname, 'quiz_data.xlsx');
 
-// Middleware to parse JSON bodies
 app.use(bodyParser.json());
+app.use(express.static('public')); // Serve static files from the 'public' folder
 
-// Path to the common Excel file (relative to where you run the server)
-const excelFilePath = 'CommonQuizData.xlsx';
-
-// Function to append a new record to the common Excel file with debug logs
+// Function to read or create an Excel file
 function appendDataToExcel(data) {
-    console.log("Received data to append:", data);
-    
+    const sheetName = "QuizResults";
     let workbook;
-    // Check if the Excel file exists
+
+    // Check if file exists, if not, create a new one
     if (fs.existsSync(excelFilePath)) {
-        console.log("Excel file exists. Reading file...");
         workbook = XLSX.readFile(excelFilePath);
     } else {
-        console.log("Excel file does not exist. Creating a new workbook...");
         workbook = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet([]);
+        XLSX.utils.book_append_sheet(workbook, ws, 'QuizData');
     }
-    
-    const sheetName = "QuizData";
-    let worksheet;
-    if (workbook.Sheets[sheetName]) {
-        console.log("Worksheet '" + sheetName + "' exists. Reading sheet...");
-        worksheet = workbook.Sheets[sheetName];
-    } else {
-        console.log("Worksheet '" + sheetName + "' does not exist. Creating a new sheet...");
-        worksheet = XLSX.utils.json_to_sheet([]);
-        XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
-    }
-    
-    // Convert existing worksheet data to JSON
-    const existingData = XLSX.utils.sheet_to_json(worksheet);
-    console.log("Existing data in sheet:", existingData);
-    
-    // Append the new record
-    existingData.push(data);
-    console.log("New data array:", existingData);
-    
-    // Convert the JSON data back to a worksheet
-    const newWorksheet = XLSX.utils.json_to_sheet(existingData);
-    workbook.Sheets[sheetName] = newWorksheet;
-    
-    // Write the updated workbook back to disk
+
+    const worksheet = workbook.Sheets['Sheet1'] || XLSX.utils.json_to_sheet([]);
+    let jsonData = XLSX.utils.sheet_to_json(workbook.Sheets['Sheet1']) || [];
+
+    jsonData.push(data); // Add new row to JSON array
+
+    // Convert back to worksheet and write to file
+    const newWS = XLSX.utils.json_to_sheet(jsonData);
+    XLSX.utils.book_append_sheet(workbook, newWS, "QuizResults");
     XLSX.writeFile(workbook, excelFilePath);
-    console.log("Data written to Excel file successfully.");
+
+    console.log("Data written successfully!");
 }
 
-// Endpoint to receive quiz data from the client
+// Endpoint to receive quiz data
+app.use(bodyParser.json());
+
 app.post('/submitQuizData', (req, res) => {
-    console.log("POST /submitQuizData called");
-    const quizData = req.body;
     try {
-        appendDataToExcel(quizData);
-        res.status(200).send({ message: 'Data saved successfully to common Excel file!' });
+        console.log("Received quiz data:", req.body);
+
+        const data = req.body;
+        appendDataToExcel(data);
+
+        res.status(200).json({ message: "Data saved successfully!" });
     } catch (error) {
-        console.error("Error in appending data to Excel file:", error);
-        res.status(500).send({ message: 'Error saving data to Excel file.' });
+        console.error("Error saving quiz data:", error);
+        res.status(500).json({ message: "Error saving quiz data." });
     }
 });
 
 app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
+    console.log(`Server running on http://localhost:${port}`);
 });
