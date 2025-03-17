@@ -5,11 +5,15 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const port = 5500;
+const PORT = process.env.PORT || 3000;
 const excelFilePath = path.join(__dirname, 'quiz_data.xlsx');
 
 app.use(bodyParser.json());
-app.use(express.static('public')); // Serve static files from the 'public' folder
+app.use(express.static(__dirname));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  });
 
 // Function to read or create an Excel file and append data
 function appendDataToExcel(data) {
@@ -57,6 +61,6 @@ app.post('/submitQuizData', (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-});
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
