@@ -53,19 +53,32 @@ document.addEventListener("DOMContentLoaded", function () {
     timerElement.style.marginTop = "10px";
     navContainer.parentNode.insertBefore(timerElement, navContainer.nextSibling);
 
-    // Initialize countdown timer: 10 minutes = 600 seconds
-    let totalTime = 600;
-    function updateTimer() {
-        const minutes = Math.floor(totalTime / 60);
-        const seconds = totalTime % 60;
-        timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        if (totalTime <= 0) {
-            clearInterval(timerInterval);
-            endQuiz();
-        }
-        totalTime--;
+ // Timer Initialization
+let totalTime = 600;
+function updateTimer() {
+    const minutes = Math.floor(totalTime / 60);
+    const seconds = totalTime % 60;
+
+    timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+    // Change color to red when time is below 1 minute
+    if (totalTime <= 60) {
+        timerElement.style.color = "red";
     }
-    timerInterval = setInterval(updateTimer, 1000);
+
+    if (totalTime <= 0) {
+        clearInterval(timerInterval);
+        endQuiz();
+    }
+
+    totalTime--;
+}
+timerInterval = setInterval(updateTimer, 1000);
+
+    // Debug: Log confidence buttons to ensure they exist in the DOM
+    console.log("Confident Button:", document.getElementById("confident-btn"));
+    console.log("Not Sure Button:", document.getElementById("not-sure-btn"));
+    console.log("Not Confident Button:", document.getElementById("not-confident-btn"));
 });
 
 // ---------------------------
@@ -193,7 +206,8 @@ function getStarRating() {
 
 /**
  * Ends the quiz by clearing the timer and displaying the result.
- * Shows two buttons: "Finish" and "Play Again".
+ * Note: When the quiz ends, the entire quiz container is replaced by the result container,
+ * which does not include the confidence buttons.
  */
 function endQuiz() {
     clearInterval(timerInterval);
@@ -208,6 +222,21 @@ function endQuiz() {
         timeTaken: timeTaken
     };
     localStorage.setItem("quizPerformance", JSON.stringify(quizPerformance));
+
+    fetch('/submitQuizData', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(quizPerformance),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
     
     // Get or set the user's attempt count (if not set, default to 1)
     let attempt = localStorage.getItem("attempt");
@@ -229,27 +258,22 @@ function endQuiz() {
 }
 
 /**
- * Redirects the user to the main index page after sending data.
+ * Ends the game. For this quiz game only, we simply redirect to the index page.
  */
 function finishGame() {
-    sendDataToServer().then(() => {
-        window.location.href = "index.html"; // Change to your main index file
-    });
+    window.location.href = "index.html";
 }
 
 /**
- * Sends the data and then resets the quiz for another attempt.
- * Also updates the attempt variant (e.g. from 1 to 2).
+ * Resets the quiz for another attempt.
  */
 function playAgain() {
-    sendDataToServer().then(() => {
-        // Increment attempt count (store as a number)
-        let attempt = parseInt(localStorage.getItem("attempt") || "1", 10);
-        attempt++;
-        localStorage.setItem("attempt", attempt);
-        // Reload the page to restart the quiz
-        window.location.reload();
-    });
+    // Increment attempt count (store as a number)
+    let attempt = parseInt(localStorage.getItem("attempt") || "1", 10);
+    attempt++;
+    localStorage.setItem("attempt", attempt);
+    // Reload the page to restart the quiz
+    window.location.reload();
 }
 
 /**
@@ -273,54 +297,3 @@ document.getElementById("not-sure-btn").addEventListener("click", function() {
 document.getElementById("not-confident-btn").addEventListener("click", function() {
     userConfidence[currentQuestionIndex] = "Not Confident";
 });
-
-// ---------------------------
-// NEW: Function to Send Data to a Common Server Excel File
-// ---------------------------
-async function sendDataToServer() {
-    // Retrieve form data (ensure your form saves these values in localStorage)
-    const userId = localStorage.getItem("userId") || "";
-    const password = localStorage.getItem("password") || "";
-    const userAge = localStorage.getItem("userAge") || "";
-    const userProfession = localStorage.getItem("userProfession") || "";
-    const status = localStorage.getItem("status") || "";
-
-    // Retrieve quiz performance data
-    const storedPerformance = localStorage.getItem("quizPerformance");
-    let quizPerformance = {};
-    if (storedPerformance) {
-        quizPerformance = JSON.parse(storedPerformance);
-    }
-
-    // Get the current attempt count and build a variant (e.g., "2.1")
-    let attempt = localStorage.getItem("attempt") || "1";
-    const variant = attempt + ".1";
-
-    // Build a data object that includes form and quiz performance information
-    const data = {
-       formData: {
-           userId: userId,
-           password: password,
-           age: userAge,
-           profession: userProfession,
-           status: status
-       },
-       quizPerformance: quizPerformance,
-       attempt: variant,
-       timestamp: new Date().toISOString()
-    };
-
-    try {
-        const response = await fetch('/submitQuizData', {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify(data)
-        });
-        const result = await response.json();
-        console.log(result.message);
-        return result;
-    } catch (err) {
-        console.error("Error submitting data", err);
-        alert("Error submitting data to server.");
-    }
-}
