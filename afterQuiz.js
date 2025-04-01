@@ -253,7 +253,7 @@ function endQuiz() {
  * Ends the game. For this quiz game only, we simply redirect to the index page.
  */
 function finishGame() {
-    window.location.href = "photo-learning.html";
+    window.location.href = "index.html";
 }
 
 /**
