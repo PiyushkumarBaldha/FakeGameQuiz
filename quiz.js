@@ -243,7 +243,7 @@ function endQuiz() {
         <div class="stars">${getStarRating()}</div>
         <div class="end-container">
         <button class= "end-btn" id="finish-btn" onclick="finishGame()">Finish</button>
-        <button class= "end-btn" id="finish-btn" onclick="playAgain()">Play Again</button>
+        <button class= "end-btn" id="playagain-btn" onclick="playAgain()">Play Again</button>
         </div>
       </div>
     `;
