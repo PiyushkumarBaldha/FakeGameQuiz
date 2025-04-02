@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+let userSessionCounter = 1;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -37,7 +38,9 @@ function appendToCSV(filePath, headers, data) {
 
 function getNextSessionId() {
   const now = new Date();
-  return `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;
+  const datePart = `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}`;
+  const sessionNumber = userSessionCounter++;
+  return `${datePart}-${sessionNumber}`;
 }
 
 // Handle quiz data

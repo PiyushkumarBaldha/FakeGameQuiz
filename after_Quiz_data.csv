@@ -1,1 +1,5 @@
-20250402-122120,122120.0,2025-04-02T10:21:25.199Z,12,engineer,50,Real;Real;Real;Real;Real;Real;Real;Real;Real;Real,;;;;;;;;;,2
+20250402-1,1.2,2025-04-02T14:25:30.604Z,10,student,50,Real;Real;Real;Real;Real;Real;Real;Real;Real;Real,;;;;;;;;;,3
+20250402-1,1.1,2025-04-02T14:26:25.599Z,41,student,50,Real;Real;Real;Real;Real;Real;Real;Real;Real;Real,;;;;;;;;;,2
+20250402-1,1.1,2025-04-02T14:45:20.337Z,23,student,50,Real;Real;Real;Real;Real;Real;Real;Real;Real;Real,;;;;;Not Sure;Confident;Confident;Confident;Confident,5
+20250402-1,1.1,2025-04-02T14:47:28.312Z,34,student,60,Real;Real;Real;Real;Real;Real;Real;Fake;Fake;Fake,;Confident;Not Sure;;;;;Not Confident;;Not Sure,5
+20250402-2,2.1,2025-04-02T14:48:17.609Z,43,engineer,50,Real;Real;Real;Real;Real;Real;Real;Real;Real;Real,;;;;;;;;;,2
