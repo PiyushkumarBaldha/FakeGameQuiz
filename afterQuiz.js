@@ -112,10 +112,10 @@ if (userAge !== null && userProfession !== null) {
 // Define Correct Answers for Each Folder
 // ---------------------------
 const folderCorrectAnswers = {
-    "Img":    ["Real", "Fake", "Real", "Fake", "Fake", "Real", "Real", "Fake", "Real", "Fake"],
-    "Img18":  ["Fake", "Real", "Fake", "Real", "Real", "Fake", "Fake", "Real", "Fake", "Real"],
-    "Img60":  ["Real", "Real", "Fake", "Fake", "Real", "Fake", "Real", "Fake", "Fake", "Real"],
-    "Img70":  ["Fake", "Fake", "Real", "Real", "Fake", "Real", "Fake", "Real", "Real", "Fake"]
+    "Img":    ["Real", "Fake", "Real", "Fake", "Real", "Real", "Fake", "Fake", "Real", "Fake"],
+    "Img18":  ["Real", "Real", "Fake", "Real", "Fake", "Fake", "Real", "Fake", "Real", "Fake"],
+    "Img60":  ["Fake", "Real", "Fake", "Real", "Real", "Fake", "Fake", "Real", "Fake", "Real"],
+    "Img70":  ["Fake", "Real", "Real", "Fake", "Fake", "Real", "Real", "Fake", "Fake", "Real"]
 };
 let correctAnswers = folderCorrectAnswers[imageFolder] || folderCorrectAnswers["Img"];
 
