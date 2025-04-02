@@ -5,7 +5,8 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const csvFilePath = path.join(__dirname, 'quiz_data.csv');
+const quizCsvPath = path.join(__dirname, 'quiz_data.csv');
+const otherCsvPath = path.join(__dirname, 'after_Quiz_data.csv');
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
@@ -13,28 +14,8 @@ app.use(express.static(__dirname));
 // Track user sessions and play counts
 const userSessions = new Map();
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-function getNextSessionId() {
-  const now = new Date();
-  return `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;
-}
-
-function appendDataToCSV(data) {
-  const headers = [
-    'sessionId',
-    'playNumber',
-    'timestamp',
-    'age',
-    'profession',
-    'score',
-    'answers',
-    'confidence',
-    'timeTaken'
-  ];
-
+// Generic CSV append function
+function appendToCSV(filePath, headers, data) {
   const row = headers.map(header => {
     let value = data[header];
     if (Array.isArray(value)) {
@@ -46,14 +27,20 @@ function appendDataToCSV(data) {
     return value || '';
   }).join(',');
 
-  if (!fs.existsSync(csvFilePath) || fs.statSync(csvFilePath).size === 0) {
-    fs.writeFileSync(csvFilePath, headers.join(',') + '\n');
+  if (!fs.existsSync(filePath) || fs.statSync(filePath).size === 0) {
+    fs.writeFileSync(filePath, headers.join(',') + '\n');
   }
 
-  fs.appendFileSync(csvFilePath, row + '\n');
-  console.log("Data saved to CSV!");
+  fs.appendFileSync(filePath, row + '\n');
+  console.log(`Data saved to ${path.basename(filePath)}!`);
 }
 
+function getNextSessionId() {
+  const now = new Date();
+  return `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;
+}
+
+// Handle quiz data
 app.post('/submitQuizData', (req, res) => {
   try {
     const { age, profession } = req.body;
@@ -75,11 +62,48 @@ app.post('/submitQuizData', (req, res) => {
       playNumber: `${sessionInfo.sessionId.split('-')[1]}.${sessionInfo.playCount - 1}`
     };
 
-    appendDataToCSV(csvData);
-    res.status(200).json({ message: "Data saved!" });
+    const quizHeaders = [
+      'sessionId',
+      'playNumber',
+      'timestamp',
+      'age',
+      'profession',
+      'score',
+      'answers',
+      'confidence',
+      'timeTaken'
+    ];
+
+    appendToCSV(quizCsvPath, quizHeaders, csvData);
+    res.status(200).json({ message: "Quiz data saved!" });
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).json({ message: "Error saving data." });
+    res.status(500).json({ message: "Error saving quiz data." });
+  }
+});
+
+// Handle other data (from your second JS file)
+app.post('/submitOtherData', (req, res) => {
+  try {
+    const otherHeaders = [
+      'timestamp',
+      'userId',
+      'feedback',
+      'rating'
+    ];
+
+    const csvData = {
+      timestamp: new Date().toISOString(),
+      userId: req.body.userId || 'anonymous',
+      feedback: req.body.feedback || '',
+      rating: req.body.rating || 0
+    };
+
+    appendToCSV(otherCsvPath, otherHeaders, csvData);
+    res.status(200).json({ message: "Other data saved!" });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Error saving other data." });
   }
 });
 
