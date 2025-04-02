@@ -260,11 +260,6 @@ function finishGame() {
  * Resets the quiz for another attempt.
  */
 function playAgain() {
-    // Increment attempt count (store as a number)
-    let attempt = parseInt(localStorage.getItem("attempt") || "1", 10);
-    attempt++;
-    localStorage.setItem("attempt", attempt);
-    // Reload the page to restart the quiz
     window.location.reload();
 }
 
