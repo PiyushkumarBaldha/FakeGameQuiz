@@ -214,7 +214,7 @@ function endQuiz() {
     const quizEndTime = Date.now();
     const timeTaken = Math.floor((quizEndTime - quizStartTime) / 1000);
   
-    const quizData = {
+    const afterQuizData = {
       timestamp: new Date().toISOString(),
       age: localStorage.getItem("userAge") || "unknown",
       profession: localStorage.getItem("userProfession") || "unknown",
@@ -224,12 +224,12 @@ function endQuiz() {
       timeTaken: timeTaken
     };
   
-    localStorage.setItem("quizPerformance", JSON.stringify(quizData));
+    localStorage.setItem("quizPerformance", JSON.stringify(afterQuizData));
   
-    fetch('/submitQuizData', {
+    fetch('/submitafterQuizData', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(quizData)
+      body: JSON.stringify(afterQuizData)
     })
       .then(response => response.json())
       .then(data => console.log("Server response:", data))
